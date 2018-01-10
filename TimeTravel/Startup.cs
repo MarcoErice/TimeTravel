@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using TimeTravel.Interfaces;
+using TimeTravel.Services;
 
 namespace TimeTravel
 {
@@ -21,6 +23,10 @@ namespace TimeTravel
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            iTimeProvider myFakeTimeProvider = new FakeTimeProvider();
+            myFakeTimeProvider.Now = new DateTime(2019, 1, 1);
+            services.AddSingleton<iTimeProvider>(new RealTimeProvider());
+            //services.AddSingleton<iTimeProvider>(myFakeTimeProvider);
             services.AddMvc();
         }
 
